@@ -157,6 +157,79 @@ class TestConsoleShow(unittest.TestCase):
                                  "** no instance found **")
 
 
+class TestConsoleUpdate(unittest.TestCase):
+    """Test cases for the show command."""
+
+    def setUp(self):
+        """Set up the test environment by creating a FileStorage instance and
+        clearing the file."""
+        self.file_path = "file.json"
+
+        if os.path.exists(self.file_path):
+            os.remove(self.file_path)
+
+        for cls in classes:
+            with patch('sys.stdout', new=StringIO()) as output:
+                HBNBCommand().onecmd(f"create {cls}")
+
+    def tearDown(self):
+        """Clean up after each test by removing the test file."""
+        if os.path.exists(self.file_path):
+            os.remove(self.file_path)
+
+        storage._FileStorage__objects.clear()
+
+    def test_update_valid_instance(self):
+        """Test update command for each class."""
+        for cls in classes:
+            with patch('sys.stdout', new=StringIO()) as output:
+                HBNBCommand().onecmd(f"create {cls}")
+                instance_id = output.getvalue().strip()
+                with patch('sys.stdout', new=StringIO()) as update_output:
+                    HBNBCommand().onecmd(
+                        f"update {cls} {instance_id} author 'Albert'")
+                    self.assertEqual(update_output.getvalue().strip(), "")
+
+    def test_update_invalid_class(self):
+        """Test show with an invalid class."""
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd("update FakeClass 1234 author 'Albert'")
+            self.assertEqual(output.getvalue().strip(),
+                             "** class doesn't exist **")
+
+    def test_update_nonexistent_id(self):
+        """Test show with a nonexistent ID."""
+        for cls in classes:
+            with patch('sys.stdout', new=StringIO()) as output:
+                HBNBCommand().onecmd(f"update {cls} 1234 author 'Albert'")
+                self.assertEqual(output.getvalue().strip(),
+                                 "** no instance found **")
+
+    def test_update_missing_id(self):
+        """Test show with a missing ID."""
+        for cls in classes:
+            with patch('sys.stdout', new=StringIO()) as output:
+                HBNBCommand().onecmd(f"update {cls}")
+                self.assertEqual(output.getvalue().strip(),
+                                 "** instance id missing **")
+
+    def test_update_missing_attr_name(self):
+        """Test show with a missing ID."""
+        for cls in classes:
+            with patch('sys.stdout', new=StringIO()) as output:
+                HBNBCommand().onecmd(f"update {cls} 1234")
+                self.assertEqual(output.getvalue().strip(),
+                                 "** attribute name missing **")
+
+    def test_update_missing_attr_value(self):
+        """Test show with a missing ID."""
+        for cls in classes:
+            with patch('sys.stdout', new=StringIO()) as output:
+                HBNBCommand().onecmd(f"update {cls} 1234 author")
+                self.assertEqual(output.getvalue().strip(),
+                                 "** value missing **")
+
+
 class TestConsoleDestroy(unittest.TestCase):
     """Test cases for the destroy command."""
 
