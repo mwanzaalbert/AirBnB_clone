@@ -353,9 +353,9 @@ class TestConsoleAdvanced(unittest.TestCase):
         for cls in classes:
             with patch('sys.stdout', new=StringIO()) as output:
                 HBNBCommand().onecmd(f"create {cls}")
-                with patch('sys.stdout', new=StringIO()) as output:
+                with patch('sys.stdout', new=StringIO()) as count_output:
                     HBNBCommand().onecmd(f"{cls}.count()")
-                    self.assertRegex(output.getvalue().strip(), r'^\d+$')
+                    self.assertRegex(count_output.getvalue().strip(), r'^\d+$')
 
     def test_show(self):
         """Test show command for each class."""
@@ -372,9 +372,9 @@ class TestConsoleAdvanced(unittest.TestCase):
         for cls in classes:
             with patch('sys.stdout', new=StringIO()) as output:
                 HBNBCommand().onecmd(f"create {cls}")
-                with patch('sys.stdout', new=StringIO()) as output:
+                with patch('sys.stdout', new=StringIO()) as show_output:
                     HBNBCommand().onecmd(f"{cls}.show(1234)")
-                    self.assertEqual(output.getvalue().strip(),
+                    self.assertEqual(show_output.getvalue().strip(),
                                      "** no instance found **")
 
     def test_all(self):
@@ -423,6 +423,41 @@ class TestConsoleAdvanced(unittest.TestCase):
                     HBNBCommand().onecmd(
                         f"{cls}.update(1234, attr_name, 'value')")
                     self.assertEqual(output.getvalue().strip(),
+                                     "** no instance found **")
+
+    def test_destroy_valid_instance(self):
+        """Test destroy with a valid instance."""
+        for cls in classes:
+            with patch('sys.stdout', new=StringIO()) as output:
+                HBNBCommand().onecmd(f"create {cls}")
+                instance_id = output.getvalue().strip()
+                with patch('sys.stdout', new=StringIO()) as destroy_output:
+                    HBNBCommand().onecmd(f"{cls}.destroy({instance_id})")
+                    self.assertEqual(destroy_output.getvalue().strip(), "")
+
+    def test_destroy_invalid_class(self):
+        """Test destroy with an invalid class."""
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd("FakeClass.destroy(1234)")
+            self.assertEqual(output.getvalue().strip(),
+                             "** class doesn't exist **")
+
+    def test_destroy_missing_id(self):
+        """Test destroy with a missing ID."""
+        for cls in classes:
+            with patch('sys.stdout', new=StringIO()) as output:
+                HBNBCommand().onecmd(f"{cls}.destroy()")
+                self.assertEqual(output.getvalue().strip(),
+                                 "** instance id missing **")
+
+    def test_destroy_nonexistent_id(self):
+        """Test destroy with a nonexistent ID."""
+        for cls in classes:
+            with patch('sys.stdout', new=StringIO()) as output:
+                HBNBCommand().onecmd(f"create {cls}")
+                with patch('sys.stdout', new=StringIO()) as destroy_output:
+                    HBNBCommand().onecmd(f"{cls}.destroy(1234)")
+                    self.assertEqual(destroy_output.getvalue().strip(),
                                      "** no instance found **")
 
 
