@@ -1,8 +1,8 @@
 #!/usr/bin/python3
-"""__init__ method for models package, or
-Module for FileStorage autoinit."""
+# -*- coding: utf-8 -*-
+"""Initialize a storage object on import."""
+import models.engine.file_storage as fs
 
-from models.engine.file_storage import FileStorage
+storage = fs.FileStorage()
 
-storage = FileStorage()
 storage.reload()
