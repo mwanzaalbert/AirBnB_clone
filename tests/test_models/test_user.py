@@ -46,21 +46,25 @@ class TestUser(unittest.TestCase):
     def test_email_attribute(self):
         """Test the email attribute of the User class."""
         user = User(email="test@example.com")
+        self.assertTrue(hasattr(user, "email"))
         self.assertEqual(user.email, "test@example.com")
 
     def test_password_attribute(self):
         """Test the password attribute of the User class."""
         user = User(password="password123")
+        self.assertTrue(hasattr(user, "password"))
         self.assertEqual(user.password, "password123")
 
     def test_first_name_attribute(self):
         """Test the first_name attribute of the User class."""
         user = User(first_name="John")
+        self.assertTrue(hasattr(user, "first_name"))
         self.assertEqual(user.first_name, "John")
 
     def test_last_name_attribute(self):
         """Test the last_name attribute of the User class."""
         user = User(last_name="Doe")
+        self.assertTrue(hasattr(user, "last_name"))
         self.assertEqual(user.last_name, "Doe")
 
     def test_create_user_with_kwargs(self):
@@ -82,21 +86,25 @@ class TestUser(unittest.TestCase):
     def test_user_email(self):
         """Test the email attribute of the User class."""
         user = User(email="user@example.com")
+        self.assertTrue(hasattr(user, "email"))
         self.assertEqual(user.email, "user@example.com")
 
     def test_user_password(self):
         """Test the password attribute of the User class."""
         user = User(password="password123")
+        self.assertTrue(hasattr(user, "password"))
         self.assertEqual(user.password, "password123")
 
     def test_user_first_name(self):
         """Test the first_name attribute of the User class."""
         user = User(first_name="John")
+        self.assertTrue(hasattr(user, "first_name"))
         self.assertEqual(user.first_name, "John")
 
     def test_user_last_name(self):
         """Test the last_name attribute of the User class."""
         user = User(last_name="Doe")
+        self.assertTrue(hasattr(user, "last_name"))
         self.assertEqual(user.last_name, "Doe")
 
     def test_user_attributes(self):
