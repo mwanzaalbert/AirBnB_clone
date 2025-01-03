@@ -46,6 +46,28 @@ class TestConsole(unittest.TestCase):
             self.assertIn("Documented commands", output.getvalue())
 
 
+class TestHBNBCommandEmptyLine(unittest.TestCase):
+    """Unittest for the emptyline method in HBNBCommand."""
+
+    def setUp(self):
+        """Set up the test environment."""
+        self.console = HBNBCommand()
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_empty_line(self, mock_stdout):
+        """Test that empty line does nothing."""
+        # Simulate pressing ENTER with an empty line
+        self.console.onecmd("")
+        self.assertEqual(mock_stdout.getvalue(), "")  # No output expected
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_empty_line_with_spaces(self, mock_stdout):
+        """Test that a line with only spaces does nothing."""
+        # Simulate pressing ENTER with a line of spaces
+        self.console.onecmd("   ")
+        self.assertEqual(mock_stdout.getvalue(), "")  # No output expected
+
+
 class TestConsoleCreate(unittest.TestCase):
     """Test cases for the create command."""
 
