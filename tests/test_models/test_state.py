@@ -91,6 +91,10 @@ class TestState(unittest.TestCase):
     def test_to_dict_contains_expected_keys(self):
         """Test that to_dict contains expected keys."""
         state_dict = self.state.to_dict()
+        self.assertNotIn("name", state_dict)
+
+        self.state.name = "Nairobi"
+        state_dict = self.state.to_dict()
         expected_keys = ["id", "created_at", "updated_at", "name", "__class__"]
         for key in expected_keys:
             self.assertIn(key, state_dict)

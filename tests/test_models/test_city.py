@@ -49,6 +49,7 @@ class TestCity(unittest.TestCase):
     def test_name_initialization(self):
         """Test that the name attribute is initialized as an empty string."""
         self.assertEqual(self.city.name, "")
+        self.assertEqual(self.city.state_id, "")
 
     def test_name_assignment(self):
         """Test assignment of the name attribute."""
@@ -59,6 +60,7 @@ class TestCity(unittest.TestCase):
         """Test City attributes."""
         obj = City()
         self.assertTrue(hasattr(obj, "name"))
+        self.assertTrue(hasattr(obj, "state_id"))
 
     def test_kwargs_initialization(self):
         """Test initialization using kwargs."""
