@@ -359,8 +359,6 @@ class TestConsoleAdvanced(unittest.TestCase):
 
     def test_show(self):
         """Test show command for each class."""
-        classes = ["BaseModel", "User", "State",
-                   "City", "Amenity", "Place", "Review"]
         for cls in classes:
             with patch('sys.stdout', new=StringIO()) as output:
                 HBNBCommand().onecmd(f"create {cls}")
@@ -378,6 +376,32 @@ class TestConsoleAdvanced(unittest.TestCase):
                     HBNBCommand().onecmd(f"{cls}.show(1234)")
                     self.assertEqual(output.getvalue().strip(),
                                      "** no instance found **")
+
+    def test_all(self):
+        """Test all command without class."""
+        for cls in classes:
+            with patch('sys.stdout', new=StringIO()) as output:
+                HBNBCommand().onecmd(f"{cls}.all()")
+                self.assertIsInstance(output.getvalue().strip(), str)
+                self.assertEqual(output.getvalue().strip(), '[]')
+
+        for cls in classes:
+            with patch('sys.stdout', new=StringIO()) as output:
+                HBNBCommand().onecmd(f"create {cls}")
+                instance_id = output.getvalue().strip()
+
+                all_instance_entry = f"[{cls}] ({instance_id})"
+                with patch('sys.stdout', new=StringIO()) as all_output:
+                    HBNBCommand().onecmd(f"{cls}.all()")
+                    self.assertIn(all_instance_entry,
+                                  all_output.getvalue().strip())
+
+    def test_all_invalid_class(self):
+        """Test all command with an invalid class."""
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd("FakeClass.all()")
+            self.assertEqual(output.getvalue().strip(),
+                             "** class doesn't exist **")
 
     def test_update(self):
         """Test update command for each class."""
