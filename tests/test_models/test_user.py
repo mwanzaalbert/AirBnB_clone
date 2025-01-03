@@ -34,6 +34,10 @@ class TestUser(unittest.TestCase):
     def test_class_attributes(self):
         """Test that class attributes are initialized correctly."""
         user = User()
+        self.assertTrue(hasattr(user, "email"))
+        self.assertTrue(hasattr(user, "password"))
+        self.assertTrue(hasattr(user, "first_name"))
+        self.assertTrue(hasattr(user, "last_name"))
         self.assertEqual(user.email, "")
         self.assertEqual(user.password, "")
         self.assertEqual(user.first_name, "")
