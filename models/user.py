@@ -12,12 +12,18 @@ __license__ = "MIT"
 __date__ = "2025-01-03"
 __version__ = "1.1"
 
-from datetime import datetime
+
 from models.base_model import BaseModel
 
 
 class User(BaseModel):
     """Defines a User model extending BaseModel."""
+
+    # Initialize attributes with default values
+    email: str = ""
+    password: str = ""
+    first_name: str = ""
+    last_name: str = ""
 
     def __init__(self, *args, **kwargs):
         """
@@ -33,23 +39,9 @@ class User(BaseModel):
         # Call the BaseModel initializer
         super().__init__(*args, **kwargs)
 
-        # Initialize attributes with default values
-        self.email: str = ""
-        self.password: str = ""
-        self.first_name: str = ""
-        self.last_name: str = ""
-
-        # If kwargs are provided, update attributes
-        if kwargs:
-            for key, value in kwargs.items():
-                if key != "__class__":
-                    if key in ("created_at", "updated_at"):
-                        setattr(self, key, datetime.fromisoformat(value))
-                    else:
-                        setattr(self, key, value)
-
 
 if __name__ == "__main__":
+    from models import storage
     # Example usage of the User class
 
     print("-- Create a new object --")

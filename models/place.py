@@ -14,7 +14,6 @@ __license__ = "MIT"
 __date__ = "2025-01-03"
 __version__ = "1.1"
 
-from datetime import datetime
 from typing import List
 from models.base_model import BaseModel
 
@@ -43,6 +42,18 @@ class Place(BaseModel):
         amenity_ids (List[str]): A list of amenity IDs associated with a
                                 place.
     """
+
+    city_id: str = ""
+    user_id: str = ""
+    name: str = ""
+    description: str = ""
+    number_rooms: int = 0
+    number_bathrooms: int = 0
+    max_guest: int = 0
+    price_by_night: int = 0
+    latitude: float = 0.0
+    longitude: float = 0.0
+    amenity_ids: List[str] = []
 
     def __init__(self, *args, **kwargs):
         """
@@ -83,32 +94,6 @@ class Place(BaseModel):
         # Call the BaseModel initializer
         super().__init__(*args, **kwargs)
 
-        self.city_id: str = ""  # initialize to empty string
-        # it will be the City.id
-        self.user_id: str = ""  # initialize to empty string
-        # it will be the User.id
-
-        self.name: str = ""  # initialize to empty string
-        self.description: str = ""  # initialize to empty string
-        self.number_rooms: int = 0
-        self.number_bathrooms: int = 0
-        self.max_guest: int = 0
-        self.price_by_night: int = 0
-        self.latitude: float = 0.0
-        self.longitude: float = 0.0
-        self.amenity_ids: List[str, ...] = []  # list of string
-        # initialized toempty list
-        # it will be the list of Amenity.id later
-
-        # If kwargs are provided, update attributes
-        if kwargs:
-            for key, value in kwargs.items():
-                if key != "__class__":
-                    if key in ("created_at", "updated_at"):
-                        setattr(self, key, datetime.fromisoformat(value))
-                    else:
-                        setattr(self, key, value)
-
 
 if __name__ == "__main__":
     # Example usage of the Place class
@@ -116,3 +101,7 @@ if __name__ == "__main__":
     my_place.name = "California"
     my_place.save()
     print(my_place)
+
+    my_newPlace = Place(**my_place.to_dict())
+    print(my_newPlace)
+    print(type(my_newPlace.updated_at))

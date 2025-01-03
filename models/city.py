@@ -29,6 +29,10 @@ class City(BaseModel):
         name (str): The name of the city.
     """
 
+    # initialize to empty string
+    name: str = ""
+    state_id: str = ""
+
     def __init__(self, *args, **kwargs):
         """
         Initialize a new City instance.
@@ -52,20 +56,10 @@ class City(BaseModel):
 
         Attributes_:
             name (str): The name of the city.
+            state_id (str) : The id of the city's State
         """
         # Call the BaseModel initializer
         super().__init__(*args, **kwargs)
-
-        self.name: str = ""  # initialize to empty string
-
-        # If kwargs are provided, update attributes
-        if kwargs:
-            for key, value in kwargs.items():
-                if key != "__class__":
-                    if key in ("created_at", "updated_at"):
-                        setattr(self, key, datetime.fromisoformat(value))
-                    else:
-                        setattr(self, key, value)
 
 
 if __name__ == "__main__":
@@ -74,3 +68,7 @@ if __name__ == "__main__":
     my_city.name = "Los Angeles"
     my_city.save()
     print(my_city)
+
+    my_newCity = City(**my_city.to_dict())
+    print(my_newCity)
+    print(type(my_newCity.updated_at))

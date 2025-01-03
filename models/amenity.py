@@ -29,6 +29,8 @@ class Amenity(BaseModel):
         name (str): The name of the amenity.
     """
 
+    name: str = ""  # initialize to empty string
+
     def __init__(self, *args, **kwargs):
         """
         Initialize a new Amenity instance.
@@ -56,17 +58,6 @@ class Amenity(BaseModel):
         # Call the BaseModel initializer
         super().__init__(*args, **kwargs)
 
-        self.name: str = ""  # initialize to empty string
-
-        # If kwargs are provided, update attributes
-        if kwargs:
-            for key, value in kwargs.items():
-                if key != "__class__":
-                    if key in ("created_at", "updated_at"):
-                        setattr(self, key, datetime.fromisoformat(value))
-                    else:
-                        setattr(self, key, value)
-
 
 if __name__ == "__main__":
     # Example usage of the Amenity class
@@ -74,3 +65,7 @@ if __name__ == "__main__":
     my_amenity.name = "Penthouse"
     my_amenity.save()
     print(my_amenity)
+
+    my_newAmenity = Amenity(**my_amenity.to_dict())
+    print(my_newAmenity)
+    print(type(my_newAmenity.updated_at))

@@ -13,7 +13,6 @@ __license__ = "MIT"
 __date__ = "2025-01-03"
 __version__ = "1.1"
 
-from datetime import datetime
 from models.base_model import BaseModel
 
 
@@ -28,6 +27,8 @@ class State(BaseModel):
     Attributes_:
         name (str): The name of the state.
     """
+
+    name: str = ""  # initialize to empty string
 
     def __init__(self, *args, **kwargs):
         """
@@ -53,17 +54,6 @@ class State(BaseModel):
         # Call the BaseModel initializer
         super().__init__(*args, **kwargs)
 
-        self.name: str = ""  # initialize to empty string
-
-        # If kwargs are provided, update attributes
-        if kwargs:
-            for key, value in kwargs.items():
-                if key != "__class__":
-                    if key in ("created_at", "updated_at"):
-                        setattr(self, key, datetime.fromisoformat(value))
-                    else:
-                        setattr(self, key, value)
-
 
 if __name__ == "__main__":
     # Example usage of the State class
@@ -71,3 +61,9 @@ if __name__ == "__main__":
     my_state.name = "California"
     my_state.save()
     print(my_state)
+    print()
+    print(my_state.to_dict())
+
+    my_newState = State(**my_state.to_dict())
+    print(my_newState)
+    print(type(my_newState.updated_at))
